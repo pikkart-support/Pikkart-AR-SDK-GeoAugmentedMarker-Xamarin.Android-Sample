@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Hello">Hello World, Click Me!</string>
+    <string name="ApplicationName">TutorialApp</string>
+
+    <string name="unusable_sensors_message">You can not see the augmented reality section because the device does not support the following sensors:</string>
+
+    <string name="searching_for_position">I\'m looking for your position</string>
+
+    <string name="provider_disabled">Provider Disabled</string>
+
+    <string name="activate_provider">Access the settings to enable gps and connectivity</string>
+
+    <string name="settings">SETTINGS</string>
+</resources>
