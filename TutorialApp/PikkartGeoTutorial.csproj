@@ -47,10 +47,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Com.Pikkart.AR.Geo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pikkart.ArSdk.3.1.1\lib\MonoAndroid403\Com.Pikkart.AR.Geo.dll</HintPath>
+      <HintPath>..\packages\Pikkart.ArSdk.3.5.4\lib\MonoAndroid403\Com.Pikkart.AR.Geo.dll</HintPath>
     </Reference>
     <Reference Include="Com.Pikkart.AR.Recognition, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pikkart.ArSdk.3.1.1\lib\MonoAndroid403\Com.Pikkart.AR.Recognition.dll</HintPath>
+      <HintPath>..\packages\Pikkart.ArSdk.3.5.4\lib\MonoAndroid403\Com.Pikkart.AR.Recognition.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
@@ -112,7 +112,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ARRenderer.cs" />
+    <Compile Include="ARView.cs" />
+    <Compile Include="GLTextureView.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Mesh.cs" />
+    <Compile Include="RenderUtils.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -150,6 +155,33 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\custom_geo_marker.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_dark_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_fuchsia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_grey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_orange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_pink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\map_marker_black.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

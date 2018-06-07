@@ -9,19 +9,22 @@ using Android.Runtime;
 using Android.Locations;
 using Android.Content;
 using Android.Views;
+using Android.Support.V7.App;
 
 namespace TutorialApp
 {
     [Activity(Label = "TutorialApp", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, Theme = "@style/AppTheme")]
-    public class MainActivity : GeoActivity
+    public class MainActivity : AppCompatActivity, IArGeoListener
     {
+        private ARView m_arView;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             //if not Android 6+ run the app
             if (Build.VERSION.SdkInt < BuildVersionCodes.M)
             {
-                Init();
+                InitLayout();
             }
             else
             {
@@ -29,47 +32,73 @@ namespace TutorialApp
             }
         }
 
-        private void Init()
+        protected override void OnResume()
         {
-            MyMarkerViewAdapter arMyMarkerViewAdapter = new MyMarkerViewAdapter(this, 51, 73);
-            MyMarkerViewAdapter mapMyMarkerViewAdapter = new MyMarkerViewAdapter(this, 30, 43);
-
-            //InitGeoFragment(arMyMarkerViewAdapter, mapMyMarkerViewAdapter);
-            InitGeoFragment();
-            Location loc1 = new Location("loc1");
-            loc1.Latitude = 45.466019;
-            loc1.Longitude = 9.188020;
-
-
-            Location loc2 = new Location("loc2");
-            loc2.Latitude = 41.903598;
-            loc2.Longitude = 12.476896;
-
-
-            Location loc3 = new Location("loc3");
-            loc3.Latitude = 44.647225;
-            loc3.Longitude = 10.924819;
-
-            List<GeoElement> geoElementList = new List<GeoElement>();
-            geoElementList.Add(new GeoElement(loc1, "1", "Scala, Milano"));
-            geoElementList.Add(new GeoElement(loc2, "2", "Rione II Trevi, Roma"));
-            geoElementList.Add(new GeoElement(loc3, "3", "Modena, Circoscrizione 1"));
-            SetGeoElements(geoElementList);
+            base.OnResume();
+            if (m_arView != null) m_arView.onResume();
         }
 
-        public override void OnGeoElementClicked(GeoElement p0)
+        protected override void OnPause()
+        {
+            base.OnPause();
+            //pause our renderer and associated videos
+            if (m_arView != null) m_arView.onPause();
+        }
+
+        private void InitLayout()
+        {
+            SetContentView(Resource.Layout.Main);
+
+            GeoFragment m_geoFragment = ((GeoFragment)FragmentManager.FindFragmentById(Resource.Id.geo_fragment));
+            m_geoFragment.DisableRecognition();
+            m_geoFragment.SetGeoListener(this);
+
+            Location loc1 = new Location("loc1");
+            loc1.Latitude = 44.654894;
+            loc1.Longitude = 10.914749;
+
+            Location loc2 = new Location("loc2");
+            loc2.Latitude = 44.653505;
+            loc2.Longitude = 10.909653;
+
+            Location loc3 = new Location("loc3");
+            loc3.Latitude = 44.647315;
+            loc3.Longitude = 10.924802;
+
+            List<GeoElement> geoElementList = new List<GeoElement>();
+            geoElementList.Add(new GeoElement(loc1, "1", "COOP, Modena")); 
+            geoElementList.Add(new GeoElement(loc2, "2", "Burger King, Modena"));
+            geoElementList.Add(new GeoElement(loc3, "3", "Piazza Matteotti, Modena"));
+
+            m_geoFragment.SetGeoElements(geoElementList);
+
+            RelativeLayout rl = (RelativeLayout)FindViewById(Resource.Id.ar_main_layout);
+            m_arView = new ARView(this);
+            rl.AddView(m_arView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MatchParent, FrameLayout.LayoutParams.MatchParent));
+
+            m_geoFragment.SetCameraTextureView(m_arView);
+
+            m_geoFragment.SetMarkerViewAdapters(new MyMarkerViewAdapter(this, 51, 73), new MyMarkerViewAdapter(this, 30, 43));
+        }
+
+        public void OnGeoElementClicked(GeoElement p0)
         {
             Toast.MakeText(this, p0.Name + " is there", ToastLength.Short).Show();
         }
 
-        public override void OnMapOrCameraClicked()
+        public void OnMapOrCameraClicked()
         {
-            base.OnMapOrCameraClicked();
+
         }
 
-        public override void OnGeolocationChanged(Location p0)
+        public void OnGeolocationChanged(Location p0)
         {
-            base.OnGeolocationChanged(p0);
+
+        }
+
+        public void OnGeoBringInterfaceOnTop()
+        {
+
         }
 
         private int m_permissionCode = 1234;
@@ -99,7 +128,7 @@ namespace TutorialApp
             }
             else
             {
-                Init();
+                InitLayout();
             }
         }
 
@@ -114,7 +143,7 @@ namespace TutorialApp
                 }
                 if (isGranted)
                 {
-                    Init();
+                    InitLayout();
                 }
                 else
                 {
@@ -144,7 +173,7 @@ namespace TutorialApp
             public override View GetSelectedView(GeoElement p0)
             {
                 ImageView imageView = (ImageView)MarkerView.FindViewById(Resource.Id.image);
-                imageView.SetImageResource(Resource.Drawable.map_marker_blue);
+                imageView.SetImageResource(Resource.Drawable.map_marker_dark_green);
                 imageView.Invalidate();
                 return MarkerView;
             }
